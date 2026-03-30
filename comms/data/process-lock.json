@@ -1,0 +1,33 @@
+{
+  "locked": true,
+  "enforceApprovalForMutations": true,
+  "strictIntegrity": true,
+  "approvalHeader": "x-process-approval",
+  "protectedApiPrefixes": [
+    "/api/email",
+    "/api/contacts",
+    "/api/contracts",
+    "/api/intake"
+  ],
+  "protectedFiles": [
+    "comms/data/intake-rules.json",
+    "comms/lib/intake.js",
+    "comms/lib/contracts.js",
+    "comms/lib/templates.js",
+    "comms/lib/daemon.js",
+    "comms/routes/intake.js",
+    "comms/routes/contracts.js",
+    "legal/08-Intake-SOP.md"
+  ],
+  "baselineHashes": {
+    "comms/data/intake-rules.json": "148072a8f93f4bc311886291cb39010601223c573c99159eef1be8deb0df6224",
+    "comms/lib/intake.js": "cfdc31832a3e3626857c0fcf0d31362cdd33654a714c5740706abbd3e54bfaca",
+    "comms/lib/contracts.js": "0e3a3d7c4a3f6362c7c3a5a5c8c1d1bc8aad1d87e5cf0d0b3766d0e79e5d57a5",
+    "comms/lib/templates.js": "d8247c85eb48dff5d73d7016e065884a28b63072c1c3baf6c47024c836c9d4b8",
+    "comms/lib/daemon.js": "93a07f9188649b8b109651f4fbedb2a92cff97ee078d21e60654cfe64c50b316",
+    "comms/routes/intake.js": "1af856ae90ded2ef138ca34c9a3e1fe0341559631a6f7d748be226bc5ad6072f",
+    "comms/routes/contracts.js": "177ccd43fc7092d15fea6f012bbf1834bc83611a26d791ce7c2884cf796df955",
+    "legal/08-Intake-SOP.md": "bd59ce760185818e0a314491d6d38db01f7a85242b260571f2c587a9f150a824"
+  },
+  "updatedAt": "2026-03-30T18:35:17.405Z"
+}

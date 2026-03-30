@@ -8,15 +8,21 @@
 require('dotenv').config();
 const express  = require('express');
 const cors     = require('cors');
+const path     = require('path');
 const daemon   = require('./lib/daemon');
+const policy   = require('./lib/policy-lock');
 
 const emailRoutes    = require('./routes/email');
 const contactRoutes  = require('./routes/contacts');
 const contractRoutes = require('./routes/contracts');
 const intakeRoutes   = require('./routes/intake');
+const policyRoutes   = require('./routes/policy');
 
 const app  = express();
 const PORT = process.env.PORT || 4080;
+const REPO_ROOT = path.resolve(__dirname, '..');
+
+policy.ensureLockFiles(REPO_ROOT);
 
 // ── Middleware ────────────────────────────────────────────────────────────────
 app.use(cors());
@@ -33,11 +39,15 @@ app.use((req, res, next) => {
   next();
 });
 
+// Process lock: blocks mutations unless explicitly approved.
+app.use(policy.enforceProcessLock(REPO_ROOT));
+
 // ── Routes ────────────────────────────────────────────────────────────────────
 app.use('/api/email',     emailRoutes);
 app.use('/api/contacts',  contactRoutes);
 app.use('/api/contracts', contractRoutes);
 app.use('/api/intake',    intakeRoutes);
+app.use('/api/policy',    policyRoutes);
 
 // ── Root landing page ─────────────────────────────────────────────────────────
 app.get('/', (req, res) => {

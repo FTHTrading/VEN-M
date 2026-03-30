@@ -16,13 +16,17 @@ comms/
 │   ├── zoho.js               Zoho Mail API client (OAuth2 auto-refresh)
 │   ├── db.js                 JSON file database (no external DB needed)
 │   ├── contacts.js           Lender CRM (stage machine)
+│   ├── intake.js             Unified intake CRM (sales/client/lender/ai_agent)
 │   ├── contracts.js          Contract lifecycle management
+│   ├── policy-lock.js        Process lock, file integrity, and approval gates
 │   ├── correspondence.js     Email audit log
 │   └── templates.js          All branded HTML email templates
 ├── routes/
 │   ├── email.js              Email send API
 │   ├── contacts.js           Contact CRUD API
-│   └── contracts.js          Contract CRUD + send API
+│   ├── contracts.js          Contract CRUD + send API
+│   ├── intake.js             Intake API
+│   └── policy.js             Process lock status API
 ├── scripts/
 │   ├── oauth-init.js         One-time Zoho OAuth setup wizard
 │   ├── send-nda.js           CLI: send NDA to new lender
@@ -30,8 +34,12 @@ comms/
 │   └── zoho-test.js          CLI: verify Zoho API connection
 └── data/
     ├── contacts.json         Lender database
+  ├── clients.json          Intake/client warehouse
     ├── contracts.json        Contract registry
-    └── correspondence.json   Email audit trail
+  ├── correspondence.json   Email audit trail
+  ├── process-lock.json     Locked process policy + baseline hashes
+  ├── daemon-instructions.json
+  └── policy-audit.log      Approval and lock events
 ```
 
 ---
@@ -86,6 +94,12 @@ Server runs on `http://localhost:4080`
 
 All endpoints require the header `X-Comms-Secret: ven-m-comms-2026` (set in `.env`).
 
+When process lock is enabled, all mutating endpoints also require:
+
+- `X-Process-Approval: <PROCESS_APPROVAL_CODE>`
+
+This prevents unapproved AI or automation changes from mutating contacts, contracts, intake records, or outbound email workflows.
+
 ### Email
 
 | Method | Endpoint | Action |
@@ -122,6 +136,27 @@ All workflow endpoints take `{ "contactId": "..." }` in the request body. They a
 | `PATCH`| `/api/contracts/:id/status` | Transition status |
 | `PATCH`| `/api/contracts/:id/file` | Attach file path/URL |
 | `POST` | `/api/contracts/:id/send-nda-cover` | Send NDA email + mark as sent |
+
+### Intake
+
+| Method | Endpoint | Action |
+|--------|----------|--------|
+| `GET`  | `/api/intake` | List intake records (filters: `type`, `assignedTo`, `stage`, `system`, `lane`) |
+| `GET`  | `/api/intake/summary` | Summary by type/system/lane/assignee |
+| `GET`  | `/api/intake/types` | Intake taxonomy + required docs + system mapping |
+| `GET`  | `/api/intake/lanes` | Separated queues: `core_system` and `ai_system` |
+| `POST` | `/api/intake` | Create intake record |
+| `PATCH`| `/api/intake/:id` | Update intake fields |
+| `PATCH`| `/api/intake/:id/stage` | Move stage |
+| `POST` | `/api/intake/:id/doc` | Mark required document received |
+
+### Process Policy
+
+| Method | Endpoint | Action |
+|--------|----------|--------|
+| `GET`  | `/api/policy/status` | Lock status + file integrity report |
+| `GET`  | `/api/policy/daemon` | Active daemon operating instructions |
+| `POST` | `/api/policy/refresh-baseline` | Refresh protected-file baseline hashes (requires approval header) |
 
 ### Dashboard
 
@@ -193,6 +228,20 @@ All emails are styled in the VEN-M dark-gold brand theme (`#c9a84c`). Templates:
 4. **`followUp`** — Days-since-last-contact follow-up
 5. **`termSheetAck`** — Term sheet receipt acknowledgment
 6. **`general`** — Free-form branded email
+
+---
+
+## Process Lock and Daemon Rules
+
+The system is configured to keep procedures stable and resistant to accidental AI drift:
+
+1. `data/process-lock.json` locks mutating APIs behind explicit approval.
+2. Protected files are hash-checked before mutation calls.
+3. If protected files are changed unexpectedly, mutations are blocked.
+4. `data/daemon-instructions.json` controls daemon behavior (auto-processing, auto-intake, warehousing).
+5. Every blocked/approved mutation is written to `data/policy-audit.log`.
+
+This means nothing operational changes unless you deliberately authorize it.
 
 ---
 

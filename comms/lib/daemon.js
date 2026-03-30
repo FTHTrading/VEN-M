@@ -19,11 +19,15 @@ const fs    = require('fs');
 const path  = require('path');
 const zoho  = require('./zoho');
 const templates = require('./templates');
+const correspondence = require('./correspondence');
+const intake = require('./intake');
+const policy = require('./policy-lock');
 
 const CONTACTS_FILE  = path.join(__dirname, '../data/contacts.json');
 const STATE_FILE     = path.join(__dirname, '../data/daemon-state.json');
 const LOG_FILE       = path.join(__dirname, '../data/daemon.log');
 const POLL_MS        = 60_000;   // 60 seconds
+const REPO_ROOT      = path.resolve(__dirname, '../..');
 
 // ── Stage auto-response map ───────────────────────────────────────────────────
 const STAGE_MAP = {
@@ -91,6 +95,12 @@ async function sendAutoResponse(contact, templateKey) {
 async function poll() {
   log('polling inbox...');
 
+  const daemonRules = policy.readDaemonRules();
+  if (!daemonRules.autoProcessInbound) {
+    log('daemon instruction: autoProcessInbound=false, skipping poll cycle');
+    return;
+  }
+
   const state    = loadState();
   const contacts = loadContacts();
   let   updated  = false;
@@ -127,13 +137,45 @@ async function poll() {
 
     log(`MSG [${msgId}] from="${fromEmail}" subj="${subject}"`);
 
+    if (daemonRules.requireInboundWarehouseLog) {
+      correspondence.log({
+        direction: 'inbound',
+        contactName: '',
+        to: process.env.ZOHO_FROM_ADDRESS || 'kevan@unykorn.org',
+        from: fromEmail,
+        subject,
+        type: 'inbound_email',
+        notes: `messageId=${msgId}`,
+      });
+    }
+
     const contact = findContact(contacts, fromEmail);
     if (!contact) {
+      if (daemonRules.autoCreateInboundSalesLead) {
+        try {
+          const existing = intake.list().find((c) => (c.email || '').toLowerCase() === (fromEmail || '').toLowerCase());
+          if (!existing) {
+            const inferredName = (msg.senderDisplayName || fromEmail || 'Inbound Lead').split('@')[0].replace(/[._-]+/g, ' ').trim();
+            const record = intake.create({
+              type: daemonRules.createSalesLeadAsType || 'sales',
+              name: inferredName || 'Inbound Lead',
+              email: fromEmail,
+              organization: msg.fromAddress?.split('@')[1] || '',
+              source: 'inbound_email',
+              assignedTo: daemonRules.assignInboundSalesTo || 'buck',
+              notes: `Auto-created by daemon from inbound email. subject="${subject}" messageId=${msgId}`,
+            });
+            log(`  → unknown sender auto-warehoused into clients.json as ${record.type} (${record.id})`);
+          }
+        } catch (err) {
+          log(`  WARN: failed auto-create inbound lead: ${err.message}`);
+        }
+      }
       log(`  → unknown sender, skipping auto-response`);
       continue;
     }
 
-    const stageAction = STAGE_MAP[contact.stage];
+    const stageAction = daemonRules.autoAdvanceKnownContactStages ? STAGE_MAP[contact.stage] : null;
     if (!stageAction) {
       log(`  → contact "${contact.name}" is at terminal stage "${contact.stage}", no auto-response`);
       continue;
@@ -181,6 +223,7 @@ async function poll() {
 
 // ── Start daemon loop ─────────────────────────────────────────────────────────
 async function start() {
+  policy.ensureLockFiles(REPO_ROOT);
   log('=== VEN-M Inbound Email Daemon starting ===');
   log(`Poll interval: ${POLL_MS / 1000}s | Contact file: ${CONTACTS_FILE}`);
 

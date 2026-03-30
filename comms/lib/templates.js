@@ -7,8 +7,9 @@
 
 require('dotenv').config();
 
-const FROM_NAME    = process.env.ZOHO_FROM_NAME    || 'Miguel Silva | VEN-M Portfolio';
+const FROM_NAME    = process.env.ZOHO_FROM_NAME    || 'Kevan Burns | UnyKorn';
 const FROM_ADDRESS = process.env.ZOHO_FROM_ADDRESS || 'kevan@unykorn.org';
+const FROM_PHONE   = process.env.KEVAN_PHONE        || '+1 (321) 278-8323';
 
 // ── Shared layout ─────────────────────────────────────────────────────────────
 function layout(bodyContent) {
@@ -44,10 +45,18 @@ function layout(bodyContent) {
   </div>
   <div class="body">${bodyContent}</div>
   <div class="footer">
-    <strong style="color:#f5f5f5;">${FROM_NAME}</strong><br/>
-    <a href="mailto:${FROM_ADDRESS}">${FROM_ADDRESS}</a> &nbsp;|&nbsp; +1 (407) 705 7884<br/>
-    Investments Danath Inc. — 390 N Orange Ave Suite 2300, Orlando FL 32801<br/><br/>
-    <span style="color:#444;">This email and any attachments are confidential and intended solely for the named recipient.
+    <strong style="color:#f5f5f5;font-size:12px;">${FROM_NAME}</strong><br/>
+    <span style="color:#999;font-size:11px;">Portfolio Correspondent &mdash; CB Oriente / VEN-M</span><br/>
+    <span style="color:#888;font-size:11px;">UnyKorn &mdash; Institutional portfolio management and fintech infrastructure platform specializing in structured finance, real-world asset coordination, and cross-border credit facility correspondence.</span><br/>
+    <span style="font-size:11px;">
+      <a href="mailto:${FROM_ADDRESS}">${FROM_ADDRESS}</a>
+      &nbsp;&bull;&nbsp; ${FROM_PHONE}
+      &nbsp;&bull;&nbsp; <a href="https://unykorn.org" style="color:#c9a84c;">unykorn.org</a>
+    </span>
+    <div style="border-top:1px solid #1e1e1e;margin:12px 0 10px;"></div>
+    <span style="color:#555;font-size:10px;">On behalf of: <strong style="color:#888;">Miguel Silva</strong>, Principal &mdash; Investments Danath Inc.<br/>
+    390 N Orange Ave Suite 2300, Orlando FL 32801 &nbsp;&bull;&nbsp; investment.danath@gmail.com &nbsp;&bull;&nbsp; +1 (407) 705 7884</span><br/><br/>
+    <span style="color:#3a3a3a;font-size:10px;">This email and any attachments are confidential and intended solely for the named recipient. &nbsp;
     XRPL Evidence Anchor: CID bafybeihhqpgxb2lia2i6zwduk4mcqxtz37uzlnu73xwxinrkymwwhfkxny</span>
   </div>
 </div>
@@ -59,7 +68,7 @@ function layout(bodyContent) {
 function outreach({ recipientName, organization, lenderCategory = 'specialty asset' }) {
   const body = `
     <p class="salutation">Dear ${recipientName},</p>
-    <p>I am writing to introduce the <strong class="gold">CB Oriente Portfolio</strong> — a $15–21M senior secured credit facility backed by a <strong>$42,000,000 appraised rough alexandrite chrysoberyl</strong> from Bahia, Brazil, with three producing Venezuelan resource businesses as operational collateral.</p>
+    <p>I am writing on behalf of <strong class="gold">Miguel Silva</strong>, Principal of Investments Danath Inc., to introduce the <strong class="gold">CB Oriente Portfolio</strong> — a $15–21M senior secured credit facility backed by a <strong>$42,000,000 appraised rough alexandrite chrysoberyl</strong> from Bahia, Brazil, with three producing Venezuelan resource businesses as operational collateral.</p>
     <p>Given ${organization}'s focus in the ${lenderCategory} lending space, I believe this facility warrants your review.</p>
     <p><strong>At a glance:</strong></p>
     <table class="table">
@@ -74,7 +83,7 @@ function outreach({ recipientName, organization, lenderCategory = 'specialty ass
     </table>
     <p>Five independent lender protections are in place: (1) physical vault custody, (2) $42M all-risk specie insurance with first-position loss payee clause, (3) UCC-1 first-priority lien, (4) bank account control agreement, and (5) XRPL on-chain attestation for tamper-evident document verification.</p>
     <p>I would welcome the opportunity to provide our full diligence packet upon execution of a mutual NDA. The complete package is indexed and ready to deliver within 24 hours of NDA execution.</p>
-    <p>Please reply to this email or call <strong class="gold">+1 (407) 705 7884</strong> at your convenience. I look forward to your feedback.</p>
+    <p>Please reply to this email or reach me directly at <strong class="gold">+1 (321) 278-8323</strong>. I look forward to your feedback.</p>
     <hr class="divider"/>
     <p style="font-size:12px;color:#888;">Appraisal SHA-256: <span class="gold" style="font-family:monospace;font-size:11px;">59B634D41C1B0913D63457955688AD4063CA7DDC73F6E5B25E7F18B7F57628BE</span></p>`;
 

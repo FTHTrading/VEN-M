@@ -256,7 +256,13 @@ function buildEmail() {
 
     <p style="color:#c9a84c;font-weight:600;">Let's get this closed, Miguel.</p>
 
-    <p>Warm regards,</p>`;
+    <p>Warm regards,</p>
+
+    <p style="margin-top:20px;">
+      <strong style="color:#f5f5f5;">Kevan Burns</strong><br/>
+      <span style="color:#888;font-size:12px;">Portfolio Correspondent &mdash; CB Oriente / VEN-M<br/>
+      UnyKorn &nbsp;&bull;&nbsp; <a href="mailto:kevan@unykorn.org" style="color:#c9a84c;">kevan@unykorn.org</a> &nbsp;&bull;&nbsp; +1 (321) 278-8323 &nbsp;&bull;&nbsp; <a href="https://unykorn.org" style="color:#c9a84c;">unykorn.org</a></span>
+    </p>`;
 
   return templates.layout(body);
 }

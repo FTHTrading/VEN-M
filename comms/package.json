@@ -1,0 +1,24 @@
+{
+  "name": "ven-m-comms",
+  "version": "1.0.0",
+  "description": "VEN-M correspondence and contract management system — kevan@unykorn.com via Zoho Mail API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "oauth": "node scripts/oauth-init.js",
+    "status": "node scripts/status.js",
+    "send-nda": "node scripts/send-nda.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.8",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "open": "^10.1.0",
+    "uuid": "^9.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

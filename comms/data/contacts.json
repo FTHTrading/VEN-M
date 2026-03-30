@@ -1,0 +1,17 @@
+[
+  {
+    "id": "seed-001",
+    "name": "Sample — Specialty Asset Lender",
+    "email": "replace@lender.com",
+    "organization": "Replace with real lender name",
+    "role": "Managing Director",
+    "phone": "",
+    "category": "specialty_asset",
+    "stage": "prospect",
+    "notes": "SEED RECORD — replace with real contact before first use",
+    "createdAt": "2026-03-30T00:00:00.000Z",
+    "updatedAt": "2026-03-30T00:00:00.000Z",
+    "lastContactAt": null,
+    "correspondenceCount": 0
+  }
+]

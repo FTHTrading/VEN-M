@@ -3,6 +3,14 @@
   "enforceApprovalForMutations": true,
   "strictIntegrity": true,
   "approvalHeader": "x-process-approval",
+  "outboundFreeze": {
+    "enabled": false,
+    "allowlist": [
+      "kevan@unykorn.org",
+      "buckvaughan3636@gmail.com"
+    ],
+    "note": "reset"
+  },
   "protectedApiPrefixes": [
     "/api/email",
     "/api/contacts",
@@ -29,5 +37,5 @@
     "comms/routes/contracts.js": "177ccd43fc7092d15fea6f012bbf1834bc83611a26d791ce7c2884cf796df955",
     "legal/08-Intake-SOP.md": "bd59ce760185818e0a314491d6d38db01f7a85242b260571f2c587a9f150a824"
   },
-  "updatedAt": "2026-03-30T18:35:17.405Z"
+  "updatedAt": "2026-03-30T19:15:50.927Z"
 }

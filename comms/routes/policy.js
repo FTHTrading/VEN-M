@@ -41,4 +41,17 @@ router.post('/refresh-baseline', (req, res) => {
   return res.json({ ok: true, lock });
 });
 
+// POST /api/policy/outbound-freeze
+router.post('/outbound-freeze', (req, res) => {
+  const required = process.env.PROCESS_APPROVAL_CODE;
+  const provided = req.headers['x-process-approval'];
+  if (!required || provided !== required) {
+    return res.status(403).json({ error: 'x-process-approval required' });
+  }
+
+  const { enabled, allowlist, note } = req.body || {};
+  const lock = policy.updateOutboundFreeze({ enabled, allowlist, note });
+  return res.json({ ok: true, outboundFreeze: lock.outboundFreeze });
+});
+
 module.exports = router;

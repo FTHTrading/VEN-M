@@ -14,6 +14,11 @@ const DEFAULT_LOCK = {
   enforceApprovalForMutations: true,
   strictIntegrity: true,
   approvalHeader: 'x-process-approval',
+  outboundFreeze: {
+    enabled: false,
+    allowlist: ['kevan@unykorn.org', 'buckvaughan3636@gmail.com'],
+    note: 'When enabled, outbound email is restricted to allowlist only unless explicitly approved.',
+  },
   protectedApiPrefixes: ['/api/email', '/api/contacts', '/api/contracts', '/api/intake'],
   protectedFiles: [
     'comms/data/intake-rules.json',
@@ -78,9 +83,65 @@ function ensureLockFiles(repoRoot) {
 
 function readLock() {
   try {
-    return JSON.parse(fs.readFileSync(LOCK_FILE, 'utf8'));
+    const parsed = JSON.parse(fs.readFileSync(LOCK_FILE, 'utf8'));
+    if (!parsed.outboundFreeze) {
+      parsed.outboundFreeze = { ...DEFAULT_LOCK.outboundFreeze };
+    }
+    return parsed;
   } catch {
     return { ...DEFAULT_LOCK };
+  }
+}
+
+function updateOutboundFreeze({ enabled, allowlist, note }) {
+  const lock = readLock();
+  const next = {
+    ...lock,
+    outboundFreeze: {
+      enabled: typeof enabled === 'boolean' ? enabled : !!lock.outboundFreeze?.enabled,
+      allowlist: Array.isArray(allowlist) ? allowlist : (lock.outboundFreeze?.allowlist || []),
+      note: note || lock.outboundFreeze?.note || DEFAULT_LOCK.outboundFreeze.note,
+    },
+    updatedAt: new Date().toISOString(),
+  };
+  fs.writeFileSync(LOCK_FILE, JSON.stringify(next, null, 2));
+  appendAudit('outbound freeze policy updated', { enabled: next.outboundFreeze.enabled, allowlistCount: next.outboundFreeze.allowlist.length });
+  return next;
+}
+
+function normalizeEmail(email) {
+  return String(email || '').trim().toLowerCase();
+}
+
+function parseRecipients(to) {
+  if (!to) return [];
+  if (Array.isArray(to)) return to.map(normalizeEmail).filter(Boolean);
+  return String(to)
+    .split(',')
+    .map((e) => normalizeEmail(e))
+    .filter(Boolean);
+}
+
+function assertOutboundAllowed(to, processApproval = '') {
+  const lock = readLock();
+  const freeze = lock.outboundFreeze || {};
+  if (!freeze.enabled) return;
+
+  const required = process.env.PROCESS_APPROVAL_CODE || '';
+  if (required && processApproval && processApproval === required) {
+    appendAudit('outbound freeze bypass via approval', { recipients: parseRecipients(to) });
+    return;
+  }
+
+  const allow = new Set((freeze.allowlist || []).map(normalizeEmail));
+  const recipients = parseRecipients(to);
+  const blocked = recipients.filter((r) => !allow.has(r));
+
+  if (blocked.length) {
+    appendAudit('outbound blocked by freeze', { recipients, blocked });
+    const err = new Error(`Outbound freeze active. Blocked recipients: ${blocked.join(', ')}`);
+    err.code = 'OUTBOUND_FROZEN';
+    throw err;
   }
 }
 
@@ -169,4 +230,6 @@ module.exports = {
   hasIntegrityViolations,
   enforceProcessLock,
   appendAudit,
+  updateOutboundFreeze,
+  assertOutboundAllowed,
 };

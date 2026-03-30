@@ -14,6 +14,7 @@ require('dotenv').config();
 const axios = require('axios');
 const fs    = require('fs');
 const path  = require('path');
+const policy = require('./policy-lock');
 
 const ZOHO_TOKEN_URL = 'https://accounts.zoho.com/oauth/v2/token';
 const ZOHO_MAIL_BASE = 'https://mail.zoho.com/api';
@@ -120,7 +121,9 @@ async function getAccountId() {
  * @param {string}          [opts.cc]      - CC addresses
  * @param {string}          [opts.replyTo] - reply-to address
  */
-async function sendEmail({ to, subject, html, cc, replyTo }) {
+async function sendEmail({ to, subject, html, cc, replyTo, processApproval = '' }) {
+  policy.assertOutboundAllowed(to, processApproval);
+
   const accountId = await getAccountId();
   const fromAddress = process.env.ZOHO_FROM_ADDRESS;
   const fromName    = process.env.ZOHO_FROM_NAME;

@@ -157,6 +157,7 @@ All workflow endpoints take `{ "contactId": "..." }` in the request body. They a
 | `GET`  | `/api/policy/status` | Lock status + file integrity report |
 | `GET`  | `/api/policy/daemon` | Active daemon operating instructions |
 | `POST` | `/api/policy/refresh-baseline` | Refresh protected-file baseline hashes (requires approval header) |
+| `POST` | `/api/policy/outbound-freeze` | Enable/disable outbound freeze and allowlist (requires approval header) |
 
 ### Dashboard
 
@@ -240,6 +241,27 @@ The system is configured to keep procedures stable and resistant to accidental A
 3. If protected files are changed unexpectedly, mutations are blocked.
 4. `data/daemon-instructions.json` controls daemon behavior (auto-processing, auto-intake, warehousing).
 5. Every blocked/approved mutation is written to `data/policy-audit.log`.
+
+### Outbound Freeze Mode
+
+Outbound freeze mode lets you restrict all outgoing email to a strict allowlist.
+
+- Config lives in `data/process-lock.json` under `outboundFreeze`.
+- Enforcement happens inside `lib/zoho.js`, so all send paths are covered.
+- Typical allowlist: Kevan and Buck only during freeze windows.
+
+Example toggle:
+
+```powershell
+Invoke-RestMethod -Method POST `
+  -Uri "http://localhost:4080/api/policy/outbound-freeze" `
+  -Headers @{
+    "X-Comms-Secret"="ven-m-comms-2026";
+    "X-Process-Approval"="<PROCESS_APPROVAL_CODE>";
+    "Content-Type"="application/json"
+  } `
+  -Body '{"enabled":true,"allowlist":["kevan@unykorn.org","buckvaughan3636@gmail.com"],"note":"Freeze enabled for review window"}'
+```
 
 This means nothing operational changes unless you deliberately authorize it.
 

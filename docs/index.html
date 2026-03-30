@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CB Oriente Portfolio — Institutional Funding Package</title>
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --dark: #111111;
+      --card: #161616;
+      --border: #2a2a2a;
+      --gold: #c9a84c;
+      --gold-light: #e8c96a;
+      --white: #f5f5f5;
+      --muted: #888888;
+      --green: #2ecc71;
+      --red: #e74c3c;
+      --amber: #f39c12;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+    }
+    header {
+      background: var(--dark);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+      text-decoration: none;
+    }
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--gold); }
+    .hero {
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(201,168,76,0.12);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.3rem 1rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+    h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+    }
+    h1 span { color: var(--gold); }
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 640px;
+      margin: 0 auto 2rem;
+    }
+    .cta-row {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-gold {
+      background: var(--gold);
+      color: var(--black);
+      font-weight: 700;
+      padding: 0.75rem 1.75rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: background 0.2s;
+    }
+    .btn-gold:hover { background: var(--gold-light); }
+    .btn-outline {
+      border: 1px solid var(--border);
+      color: var(--white);
+      padding: 0.75rem 1.75rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin: 4rem auto;
+      max-width: 900px;
+      overflow: hidden;
+    }
+    .stat {
+      background: var(--card);
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--gold);
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 0.25rem;
+    }
+    .section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+    .section-title {
+      font-size: 0.75rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.5rem;
+    }
+    h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+    }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.75rem;
+      transition: border-color 0.2s;
+    }
+    .card:hover { border-color: var(--gold); }
+    .card-label {
+      font-size: 0.7rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 0.5rem;
+    }
+    .card h3 { font-size: 1.15rem; margin-bottom: 0.5rem; }
+    .card p { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+    .card .value {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--gold-light);
+      margin: 0.75rem 0;
+    }
+    .tag {
+      display: inline-block;
+      background: rgba(201,168,76,0.12);
+      color: var(--gold);
+      font-size: 0.7rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      margin-right: 0.4rem;
+      margin-top: 0.4rem;
+    }
+    .evidence-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .evidence-row:last-child { border-bottom: none; }
+    .ev-icon {
+      width: 36px;
+      height: 36px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1rem;
+    }
+    .ev-label { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .ev-value { font-family: 'Courier New', monospace; font-size: 0.8rem; color: var(--gold-light); word-break: break-all; }
+    .status-pill {
+      display: inline-block;
+      padding: 0.2rem 0.7rem;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .status-complete { background: rgba(46,204,113,0.15); color: var(--green); }
+    .status-pending { background: rgba(243,156,18,0.15); color: var(--amber); }
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+    @media (max-width: 768px) {
+      h1 { font-size: 2rem; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="index.html">CB ORIENTE PORTFOLIO</a>
+  <nav>
+    <a href="projects.html">Projects</a>
+    <a href="process.html">Process</a>
+    <a href="get-paid.html">Get Funded</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-badge">Institutional Funding Package &bull; March 2026</div>
+    <h1>A <span>$42 Million</span> Hard Asset<br/>Backing Latin American<br/>Resource Expansion</h1>
+    <p>
+      Senior secured credit facility — $15M to $21M — backed by a GIA-appraised 
+      rough Alexandrite chrysoberyl and three cash-flowing Venezuelan projects.
+    </p>
+    <div class="cta-row">
+      <a class="btn-gold" href="get-paid.html">Review the Facility &rarr;</a>
+      <a class="btn-outline" href="projects.html">All Four Projects</a>
+    </div>
+  </section>
+
+  <div class="stats">
+    <div class="stat">
+      <span class="stat-value">$42M</span>
+      <span class="stat-label">Appraised Collateral</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">$15–21M</span>
+      <span class="stat-label">Facility Target</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">35–50%</span>
+      <span class="stat-label">LTV on Collateral</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">$9.7M</span>
+      <span class="stat-label">Year 2 Portfolio EBITDA</span>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-title">Portfolio Assets</div>
+    <h2>Four Assets — One Package</h2>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-label">Primary Collateral</div>
+        <h3>Rough Alexandrite Chrysoberyl</h3>
+        <div class="value">$42,000,000</div>
+        <p>2 kg rough stone from Bahia, Brazil. Appraised by Prof. Norman Michael Rodi, G.G. (GIA #7535333). SHA-256 fingerprinted, IPFS-pinned, XRPL-attested.</p>
+        <span class="tag">GIA Appraiser</span>
+        <span class="tag">DocuSign Certified</span>
+        <span class="tag">XRPL Anchored</span>
+      </div>
+      <div class="card">
+        <div class="card-label">Limestone Mining — Sucre, Venezuela</div>
+        <h3>Carbonatos de Oriente, C.A.</h3>
+        <div class="value">$4.5M Capital</div>
+        <p>44.10 Ha mining concession. CaCO₃ content 94–96%. Registered No. 71 Tomo A16. Target 600,000 MT/year limestone + 1,000 MT/month lime. Currently at 25% capacity.</p>
+        <span class="tag">Limestone</span>
+        <span class="tag">Sucre State</span>
+        <span class="tag">Expansion Ready</span>
+      </div>
+      <div class="card">
+        <div class="card-label">Fuel Infrastructure — Sucre, Venezuela</div>
+        <h3>Distribuidora Curaoil</h3>
+        <div class="value">$7.0M Capital</div>
+        <p>12.5-hectare bulk fuel storage and dispatch facility. API/NFPA compliant design. Diesel + gasoline wholesale. 50–80 construction jobs; 15–25 permanent. 18-month build timeline.</p>
+        <span class="tag">Industrial Fuel</span>
+        <span class="tag">Sucre State</span>
+        <span class="tag">12.5 Ha Site</span>
+      </div>
+      <div class="card">
+        <div class="card-label">Thermal Coal — Anzoátegui, Venezuela</div>
+        <h3>Yacimiento Fila Maestra</h3>
+        <div class="value">$5.5M Capital (Phase 1+2)</div>
+        <p>Three coal concessions (Fila Maestra I, II, III) in Bruzual &amp; Peñalver municipalities. Historical production 1987–1993 by CAVOVEN. 500,000 MT/year capacity. Export: Guyana market.</p>
+        <span class="tag">Thermal Coal</span>
+        <span class="tag">Anzoátegui State</span>
+        <span class="tag">Export Ready</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">Evidence Chain</div>
+    <h2>Immutable, Publicly Verifiable</h2>
+    <div class="card">
+      <div class="evidence-row">
+        <div class="ev-icon">✍️</div>
+        <div>
+          <div class="ev-label">DocuSign Envelope — Appraiser Signature</div>
+          <div class="ev-value">98840EC3-C71B-4647-B2FD-0DD80EC4C7F1</div>
+        </div>
+        <span class="status-pill status-complete">Confirmed</span>
+      </div>
+      <div class="evidence-row">
+        <div class="ev-icon">#</div>
+        <div>
+          <div class="ev-label">SHA-256 Cryptographic Fingerprint</div>
+          <div class="ev-value">59B634D41C1B0913D63457955688AD4063CA7DDC73F6E5B25E7F18B7F57628BE</div>
+        </div>
+        <span class="status-pill status-complete">Confirmed</span>
+      </div>
+      <div class="evidence-row">
+        <div class="ev-icon">📌</div>
+        <div>
+          <div class="ev-label">IPFS Content Identifier (CID)</div>
+          <div class="ev-value">bafybeihhqpgxb2lia2i6zwduk4mcqxtz37uzlnu73xwxinrkymwwhfkxny</div>
+        </div>
+        <span class="status-pill status-complete">Pinned</span>
+      </div>
+      <div class="evidence-row">
+        <div class="ev-icon">⛓️</div>
+        <div>
+          <div class="ev-label">XRPL Attestation Transaction</div>
+          <div class="ev-value">[Ceremony Pending — TX Hash to be recorded at close]</div>
+        </div>
+        <span class="status-pill status-pending">Pending</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">Why It Works</div>
+    <h2>Five Lender Protections — Belt &amp; Suspenders</h2>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-label">01</div>
+        <h3>Hard Collateral</h3>
+        <p>$42M appraised physical asset at 35–50% LTV. Even total project failure doesn't touch the stone.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">02</div>
+        <h3>Institutional Custody</h3>
+        <p>Brinks or Malca-Amit vault with Lender Custody Control Agreement — lender controls release.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">03</div>
+        <h3>$42M Insurance</h3>
+        <p>All-risk specie policy (Lloyd's / Chubb / AXA). Lender is first-position loss payee.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">04</div>
+        <h3>UCC-1 Security Interest</h3>
+        <p>Perfected lien on collateral under Florida UCC. Lender has legal priority over all creditors.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">05</div>
+        <h3>XRPL Evidence Anchor</h3>
+        <p>Immutable, tamper-resistant on-chain attestation. Anyone can verify the appraisal's authenticity.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">06</div>
+        <h3>Cash Flow Coverage</h3>
+        <p>Year 2 portfolio EBITDA $9.7M against ~$4.9M annual debt service = 1.98x DSCR.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="text-align:center; padding-bottom:5rem;">
+    <div class="section-title">Ready to Review</div>
+    <h2>Complete Diligence Package Available</h2>
+    <p style="color:var(--muted); max-width:540px; margin:0 auto 2rem;">
+      Full institutional package — appraisal documentation, financial models, custody and insurance 
+      framework, legal structure, XRPL evidence record, and project dossiers — available under standard mutual NDA.
+    </p>
+    <div class="cta-row">
+      <a class="btn-gold" href="get-paid.html">Facility Structure &rarr;</a>
+      <a class="btn-outline" href="process.html">The Process</a>
+    </div>
+    <p style="margin-top:2rem;color:var(--muted);font-size:0.85rem;">
+      Contact: Miguel Silva &mdash; <a href="mailto:investment.danath@gmail.com" style="color:var(--gold)">investment.danath@gmail.com</a> &mdash; +1 (407) 705 7884
+    </p>
+  </section>
+</main>
+
+<footer>
+  <p>CB Oriente Portfolio &mdash; Investments Danath Inc. &mdash; Orlando, FL &mdash; March 2026</p>
+  <p style="margin-top:0.5rem;">Evidence verification: <a href="https://ipfs.io/ipfs/bafybeihhqpgxb2lia2i6zwduk4mcqxtz37uzlnu73xwxinrkymwwhfkxny" target="_blank">IPFS Appraisal Document</a></p>
+</footer>
+
+</body>
+</html>

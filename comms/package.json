@@ -11,7 +11,9 @@
     "status": "node scripts/status.js",
     "send-nda": "node scripts/send-nda.js",
     "daemon": "node scripts/start-daemon.js",
-    "daemon:bg": "start /B node scripts/start-daemon.js"
+    "daemon:bg": "start /B node scripts/start-daemon.js",
+    "vendor:daemon": "node scripts/start-vendor-daemon.js",
+    "vendor:daemon:bg": "start /B node scripts/start-vendor-daemon.js"
   },
   "dependencies": {
     "axios": "^1.6.8",

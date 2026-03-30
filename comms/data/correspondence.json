@@ -24,5 +24,31 @@
     "contractId": null,
     "notes": "",
     "at": "2026-03-30T18:21:46.934Z"
+  },
+  {
+    "id": "b101f11a-324b-459e-9d1b-4e41cacb589b",
+    "direction": "outbound",
+    "contactId": null,
+    "contactName": "Zoho Team",
+    "to": "pemchuila.rs@zohocorp.com,ebenezer.mohan@zohocorp.com",
+    "from": "kevan@unykorn.org",
+    "subject": "Request: Clarification on Outgoing Block + Full Team Pricing (kevan@unykorn.org)",
+    "type": "vendor_escalation",
+    "contractId": null,
+    "notes": "Requested block clarification + full team fee structure",
+    "at": "2026-03-30T19:39:07.354Z"
+  },
+  {
+    "id": "69b8940b-2d73-4557-aa2d-fddd4b5b80a1",
+    "direction": "outbound",
+    "contactId": null,
+    "contactName": "Zoho Team",
+    "to": "pemchuila.rs@zohocorp.com,ebenezer.mohan@zohocorp.com",
+    "from": "kevan@unykorn.org",
+    "subject": "Request: Clarification on Outgoing Block + Full Team Pricing (kevan@unykorn.org)",
+    "type": "vendor_escalation",
+    "contractId": null,
+    "notes": "Requested block clarification + full team fee structure",
+    "at": "2026-03-30T19:39:14.613Z"
   }
 ]

@@ -1,0 +1,31 @@
+{
+  "team": [
+    {
+      "id": "kevan-burns",
+      "name": "Kevan Burns",
+      "role": "Portfolio Correspondent / Operator",
+      "email": "kevan@unykorn.org",
+      "phone": "+1 (321) 278-8323",
+      "company": "UnyKorn",
+      "website": "unykorn.org",
+      "isAdmin": true
+    },
+    {
+      "id": "buck-vaughan",
+      "name": "Buck Vaughan",
+      "role": "Team Stakeholder",
+      "email": "buckvaughan3636@gmail.com",
+      "phone": "+1 (678) 687-2855",
+      "company": "UnyKorn / VEN-M",
+      "isAdmin": false
+    }
+  ],
+  "principal": {
+    "name": "Miguel Silva",
+    "role": "Principal / Borrower",
+    "email": "investment.danath@gmail.com",
+    "phone": "+1 (407) 705-7884",
+    "company": "Investments Danath Inc.",
+    "address": "390 N Orange Ave Suite 2300, Orlando FL 32801"
+  }
+}

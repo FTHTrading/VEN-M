@@ -1,0 +1,70 @@
+{
+  "_comment": "UnyKorn Web3 Identity — unykorn.org + .unykorn Handshake TLD",
+
+  "web3": {
+    "handshake_tld": ".unykorn",
+    "handshake_status": "pending_registration",
+    "handshake_registrar": "https://www.namebase.io/domains/unykorn",
+    "handshake_marketplace": "https://namebase.io",
+    "ens_domain": "unykorn.eth",
+    "ens_status": "pending_registration",
+    "ens_registrar": "https://app.ens.domains/unykorn.eth",
+    "unstoppable_domain": "unykorn.crypto",
+    "unstoppable_status": "pending_registration",
+    "unstoppable_registrar": "https://unstoppabledomains.com"
+  },
+
+  "resolvers": {
+    "handshake": [
+      "103.196.38.38",
+      "103.196.38.39"
+    ],
+    "comment": "Use NextDNS or Impervious browser for .unykorn HNS resolution"
+  },
+
+  "wallets": {
+    "evm": {
+      "address": "0x7d9a65d06dcc435a52D5880C6310Bd6E96c156DB",
+      "chains": ["Ethereum", "Polygon", "Avalanche", "Base"],
+      "label": "UnyKorn EVM Treasury"
+    },
+    "xrpl": {
+      "address": "rsJ3PGGDH4vPpedjfVRe9YKTCf9BWu6TDC",
+      "label": "UnyKorn XRPL Treasury"
+    },
+    "stellar": {
+      "address": "GBJF54FBYPBVHR6Z3OKWWEMPF6QYPNH3RZZYX3E4V7AUMUWIEV7Z3DPX",
+      "label": "UnyKorn Stellar Treasury"
+    },
+    "apostle_chain": {
+      "chain_id": 7332,
+      "rpc": "http://localhost:7332",
+      "label": "Apostle Chain — AI-to-AI (ATP/UNY)"
+    }
+  },
+
+  "tokens": {
+    "UNY": {
+      "name": "UnyKorn Token",
+      "ticker": "UNY",
+      "chains": {
+        "avalanche": "0xc09003213b34c7bec8d2eddfad4b43e51d007d66"
+      }
+    },
+    "ATP": {
+      "name": "Apostle Token (Primary)",
+      "ticker": "ATP",
+      "chain_id": 7332,
+      "decimals": 18
+    }
+  },
+
+  "identity": {
+    "brand": "UnyKorn",
+    "domain": "unykorn.org",
+    "web3_handle": "@unykorn",
+    "description": "Institutional portfolio management and fintech infrastructure platform specializing in structured finance, real-world asset tokenization, and cross-border credit facility coordination.",
+    "operator": "Kevan Burns",
+    "email": "kevan@unykorn.org"
+  }
+}

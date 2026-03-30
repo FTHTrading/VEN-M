@@ -8,6 +8,7 @@
 require('dotenv').config();
 const express  = require('express');
 const cors     = require('cors');
+const daemon   = require('./lib/daemon');
 
 const emailRoutes    = require('./routes/email');
 const contactRoutes  = require('./routes/contacts');
@@ -293,6 +294,33 @@ app.get('/', (req, res) => {
     </div>
   </div>
 
+  <!-- ── Web3 Identity ── -->
+  <div class="section">
+    <div class="section-title">Web3 Identity</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+      <div class="fin-card">
+        <div class="fin-label">Handshake TLD</div>
+        <div class="fin-val" style="font-size:18px;letter-spacing:0.05em;">.unykorn</div>
+        <div class="fin-sub" style="color:#e0962a;">Registration in progress</div>
+      </div>
+      <div class="fin-card">
+        <div class="fin-label">ENS Domain</div>
+        <div class="fin-val" style="font-size:16px;">unykorn.eth</div>
+        <div class="fin-sub" style="color:#e0962a;">Pending registration</div>
+      </div>
+      <div class="fin-card">
+        <div class="fin-label">EVM Treasury</div>
+        <div class="fin-val" style="font-size:10px;font-family:monospace;letter-spacing:0.02em;">0x7d9a65d0…156DB</div>
+        <div class="fin-sub">ETH · Polygon · Avalanche · Base</div>
+      </div>
+      <div class="fin-card">
+        <div class="fin-label">Apostle Chain</div>
+        <div class="fin-val" style="font-size:14px;">ATP / UNY</div>
+        <div class="fin-sub">Chain ID 7332 — AI-to-AI Layer</div>
+      </div>
+    </div>
+  </div>
+
   <!-- ── Confidentiality ── -->
   <div class="section" style="padding-bottom:0">
     <div style="text-align:center;padding:24px 0">
@@ -360,6 +388,11 @@ app.get('/pipeline', (req, res) => {
 app.use((req, res) => res.status(404).json({ error: 'Not found' }));
 
 // ── Start ─────────────────────────────────────────────────────────────────────
+// ── Auto-start inbound email daemon ─────────────────────────────────────────
+if (process.env.DAEMON_ENABLED !== 'false') {
+  daemon.start().catch(err => console.error('[daemon] startup error:', err.message));
+}
+
 app.listen(PORT, () => {
   console.log(`\n  VEN-M Comms System`);
   console.log(`  ─────────────────────────────────────`);

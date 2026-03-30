@@ -1,25 +1,23 @@
 {
-  "_comment": "UnyKorn Web3 Identity — unykorn.org + .unykorn Handshake TLD",
+  "_comment": "UnyKorn Web3 Identity — .unykorn is natively registered on UnyKorn L1 (Chain 7331)",
 
-  "web3": {
-    "handshake_tld": ".unykorn",
-    "handshake_status": "pending_registration",
-    "handshake_registrar": "https://www.namebase.io/domains/unykorn",
-    "handshake_marketplace": "https://namebase.io",
-    "ens_domain": "unykorn.eth",
-    "ens_status": "pending_registration",
-    "ens_registrar": "https://app.ens.domains/unykorn.eth",
-    "unstoppable_domain": "unykorn.crypto",
-    "unstoppable_status": "pending_registration",
-    "unstoppable_registrar": "https://unstoppabledomains.com"
+  "namespace": {
+    "tld": ".unykorn",
+    "chain": "UnyKorn L1",
+    "chain_id": 7331,
+    "status": "live",
+    "resolver_api": "https://l1.unykorn.org/ns/:name",
+    "local_resolver": "http://localhost:4000/ns/:name",
+    "note": ".unykorn is NOT Handshake or ENS — it is a first-class native TLD on the UnyKorn L1 blockchain. Names are registered and resolved directly on-chain via the UnyKorn OS namespace module."
   },
 
-  "resolvers": {
-    "handshake": [
-      "103.196.38.38",
-      "103.196.38.39"
-    ],
-    "comment": "Use NextDNS or Impervious browser for .unykorn HNS resolution"
+  "registered_names": {
+    "kevan.unykorn": { "owner": "Kevan Burns", "target": "kevan@unykorn.org" },
+    "buck.unykorn": { "owner": "Buck Vaughan", "target": "buckvaughan3636@gmail.com" },
+    "pay.unykorn": { "target": "https://app.unykorn.org/pay", "description": "FTH Pay gateway" },
+    "comms.unykorn": { "target": "https://comms.unykorn.org", "description": "UnyKorn Comms API" },
+    "ven-m.unykorn": { "target": "https://comms.unykorn.org", "description": "VEN-M Portfolio Portal" },
+    "apostle.unykorn": { "target": "http://localhost:7332", "description": "Apostle Chain settlement layer" }
   },
 
   "wallets": {

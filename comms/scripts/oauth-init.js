@@ -19,7 +19,7 @@ const axios = require('axios');
 
 const CLIENT_ID     = process.env.ZOHO_CLIENT_ID;
 const CLIENT_SECRET = process.env.ZOHO_CLIENT_SECRET;
-const REDIRECT_PORT = 9999;
+const REDIRECT_PORT = 9876;
 const REDIRECT_URI  = `http://localhost:${REDIRECT_PORT}/callback`;
 
 const SCOPES = [
@@ -40,7 +40,8 @@ const authUrl =
   `&client_id=${CLIENT_ID}` +
   `&response_type=code` +
   `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}` +
-  `&access_type=offline`;
+  `&access_type=offline` +
+  `&prompt=consent`;
 
 console.log('\n  VEN-M Zoho OAuth Setup');
 console.log('  ──────────────────────────────────────────');
@@ -99,9 +100,24 @@ const server = http.createServer(async (req, res) => {
       { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
     );
 
-    const { access_token, refresh_token, error: tokenError } = tokenResp.data;
+    const respData = tokenResp.data;
+    console.log('  [debug] Token response keys:', Object.keys(respData));
 
+    const tokenError = respData.error;
     if (tokenError) throw new Error(tokenError);
+
+    // Zoho may return refresh_token or access_token depending on grant type
+    const refresh_token = respData.refresh_token;
+    const access_token  = respData.access_token;
+
+    if (!refresh_token) {
+      console.error('\n  [debug] Full response:', JSON.stringify(respData, null, 2));
+      throw new Error(
+        'No refresh_token in Zoho response.\n' +
+        'Ensure your Zoho app type is "Server-based Applications" (not Self Client)\n' +
+        'and the redirect URI http://localhost:8080/callback is registered in the API Console.'
+      );
+    }
 
     // Write refresh_token to .env
     const envPath = path.resolve(__dirname, '../.env');

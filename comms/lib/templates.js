@@ -8,7 +8,7 @@
 require('dotenv').config();
 
 const FROM_NAME    = process.env.ZOHO_FROM_NAME    || 'Miguel Silva | VEN-M Portfolio';
-const FROM_ADDRESS = process.env.ZOHO_FROM_ADDRESS || 'kevan@unykorn.com';
+const FROM_ADDRESS = process.env.ZOHO_FROM_ADDRESS || 'kevan@unykorn.org';
 
 // ── Shared layout ─────────────────────────────────────────────────────────────
 function layout(bodyContent) {

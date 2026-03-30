@@ -191,4 +191,163 @@ function general({ recipientName, organization, subject: subjectLine, bodyText }
   };
 }
 
-module.exports = { outreach, ndaTransmittal, diligencePacket, followUp, termSheetAck, general, layout };
+// ── Template 7: Intake Confirmation (to new client) ──────────────────────────
+function intakeConfirmation({ name, type, assignedTo, product }) {
+  const typeLabels = {
+    lender:   'Lender / Investor',
+    client:   'Business / Service Client',
+    ai_agent: 'AI Agent (Apostle Chain)',
+    sales:    'Sales Inquiry',
+  };
+  const assigneeNames = { buck: 'Buck Vaughan', kevan: 'Kevan Burns' };
+  const assigneeEmails = { buck: 'buckvaughan3636@gmail.com', kevan: 'kevan@unykorn.org' };
+  const label = typeLabels[type] || type;
+  const handler = assigneeNames[assignedTo] || assignedTo;
+  const handlerEmail = assigneeEmails[assignedTo] || FROM_ADDRESS;
+
+  const body = `
+    <p class="salutation">Hi ${name},</p>
+    <p>Thank you for your inquiry. We have received your request and your intake record has been created in our system.</p>
+    <table class="table">
+      <tr><th>Field</th><th>Detail</th></tr>
+      <tr><td>Client Type</td><td class="gold">${label}</td></tr>
+      ${product ? `<tr><td>Product / Service</td><td>${product}</td></tr>` : ''}
+      <tr><td>Assigned To</td><td>${handler}</td></tr>
+      <tr><td>Expected Response</td><td>Within 2 business days</td></tr>
+    </table>
+    <p>Your point of contact is <strong class="gold">${handler}</strong> at
+       <a href="mailto:${handlerEmail}" style="color:#c9a84c;">${handlerEmail}</a>.
+       Please feel free to reach out directly if you have any questions in the meantime.</p>
+    <p>We look forward to working with you.</p>`;
+
+  return {
+    subject: `We have received your inquiry — UnyKorn / FTH Pay`,
+    html: layout(body),
+  };
+}
+
+// ── Template 8: Buck Operations Brief ────────────────────────────────────────
+function buckOpsBrief() {
+  const body = `
+    <p class="salutation">Buck,</p>
+    <p>This is your full operational brief for <strong class="gold">UnyKorn / FTH Pay</strong>. Please read this carefully — it covers everything you need to know to onboard clients, manage the intake pipeline, handle contracts, and operate effectively within our infrastructure.</p>
+
+    <hr class="divider"/>
+    <h3 style="color:#c9a84c;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 12px;">1. Your Role</h3>
+    <p>You are the <strong>Client Relations & Sales Lead</strong> for UnyKorn. You own two client pipelines:</p>
+    <table class="table">
+      <tr><th>Pipeline</th><th>System</th><th>Your Job</th></tr>
+      <tr><td class="gold">Sales Leads</td><td>FTH Pay</td><td>Qualify, pitch, close new merchants + product customers</td></tr>
+      <tr><td class="gold">Service Clients</td><td>UnyKorn OS</td><td>Onboard businesses using our platform/API — collect docs, execute agreements</td></tr>
+    </table>
+    <p><strong>Operating lanes:</strong></p>
+    <table class="table">
+      <tr><th>Lane</th><th>Scope</th><th>Owner</th></tr>
+      <tr><td class="gold">core_system</td><td>Lenders, service clients, sales, contracts, onboarding</td><td>Buck + Kevan</td></tr>
+      <tr><td class="gold">ai_system</td><td>Apostle Chain AI agents, agent agreements, AI compliance</td><td>Kevan only</td></tr>
+    </table>
+    <p><strong>Kevan owns:</strong> Lender pipeline (CB Oriente / VEN-M) and AI Agent registrations (Apostle Chain). Do not advance those pipelines without Kevan's authorization.</p>
+
+    <hr class="divider"/>
+    <h3 style="color:#c9a84c;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 12px;">2. The Four Client Types</h3>
+    <table class="table">
+      <tr><th>Type</th><th>Label</th><th>Owner</th><th>System</th><th>Example</th></tr>
+      <tr><td><code style="color:#c9a84c;">sales</code></td><td>Sales Lead</td><td>Buck</td><td>FTH Pay</td><td>Restaurant chain wanting payment processing</td></tr>
+      <tr><td><code style="color:#c9a84c;">client</code></td><td>Service Client</td><td>Buck</td><td>UnyKorn OS</td><td>Company using our API / platform features</td></tr>
+      <tr><td><code style="color:#c9a84c;">lender</code></td><td>Lender / Investor</td><td>Kevan</td><td>Lender Pipeline</td><td>Institutional capital provider for CB Oriente</td></tr>
+      <tr><td><code style="color:#c9a84c;">ai_agent</code></td><td>AI Agent</td><td>Kevan</td><td>Apostle Chain</td><td>Autonomous AI agent doing settlements on Chain 7332</td></tr>
+    </table>
+
+    <hr class="divider"/>
+    <h3 style="color:#c9a84c;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 12px;">3. Your Sales Pipeline (for <code style="color:#c9a84c;">sales</code> type)</h3>
+    <table class="table">
+      <tr><th>#</th><th>Stage</th><th>What it means</th></tr>
+      <tr><td>1</td><td class="gold">lead</td><td>Name/email captured — no contact yet</td></tr>
+      <tr><td>2</td><td class="gold">qualified</td><td>Confirmed they have a relevant need + budget</td></tr>
+      <tr><td>3</td><td class="gold">discovery</td><td>Full discovery call / demo completed</td></tr>
+      <tr><td>4</td><td class="gold">proposal</td><td>Formal proposal + pricing sent</td></tr>
+      <tr><td>5</td><td class="gold">negotiation</td><td>Active back-and-forth on terms</td></tr>
+      <tr><td>6</td><td class="gold">closed_won</td><td>Deal closed — migrate to service client</td></tr>
+      <tr><td>7</td><td class="gold">closed_lost</td><td>Not proceeding — log reason in notes</td></tr>
+    </table>
+
+    <hr class="divider"/>
+    <h3 style="color:#c9a84c;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 12px;">4. Required Documents — By Client Type</h3>
+    <p><strong>For ALL clients:</strong> No confidential platform info is shared before NDA is signed. No platform access before agreement is signed.</p>
+    <table class="table">
+      <tr><th>Client Type</th><th>Required Before Platform Access</th></tr>
+      <tr><td>Sales Lead</td><td>NDA (if sharing platform details) · Discovery notes · Proposal</td></tr>
+      <tr><td>Service Client</td><td>NDA · KYC/AML · Signed Master Service Agreement (MSA) · Statement of Work (SOW)</td></tr>
+    </table>
+    <p>Contract templates are in the <code style="color:#c9a84c;">/legal/</code> folder of the VEN-M repo:
+       <a href="https://github.com/FTHTrading/VEN-M/tree/main/legal" style="color:#c9a84c;">github.com/FTHTrading/VEN-M/legal</a></p>
+
+    <hr class="divider"/>
+    <h3 style="color:#c9a84c;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 12px;">5. Intake Process — Step by Step</h3>
+    <p><strong>Step 1:</strong> Capture the lead. Collect: full name, email, company, phone, interested product, source.</p>
+    <p><strong>Step 2:</strong> Create intake record via the comms API (or contact Kevan to do it):</p>
+    <pre style="background:#0a0a0a;border:1px solid #2a2a2a;padding:12px;font-size:11px;color:#c9a84c;overflow:auto;border-radius:4px;">POST https://comms.unykorn.org/api/intake
+X-Comms-Secret: ven-m-comms-2026
+{
+  "type": "sales",
+  "name": "John Doe",
+  "email": "john@company.com",
+  "organization": "Acme Inc.",
+  "phone": "+1 555 000 0000",
+  "product": "fth_pay_merchants",
+  "source": "inbound",
+  "notes": "Reached out via LinkedIn. Wants FTH Pay for restaurant chain."
+}</pre>
+    <p><strong>Step 3:</strong> System auto-sends confirmation email to the client and assigns the record to you.</p>
+    <p><strong>Step 4:</strong> Make initial contact within 48 hours. Send intro + NDA if needed.</p>
+    <p><strong>Step 5:</strong> Advance stages as milestones are met. Update notes in the record.</p>
+    <p><strong>Step 6:</strong> Collect required docs. Mark them received via API. No advancing past <strong>proposal</strong> without NDA signed.</p>
+    <p><strong>Step 7:</strong> For deals &gt; $50K — loop in Kevan before sending agreements.</p>
+    <p><strong>Step 8:</strong> On close — advance to <code class="gold">closed_won</code> and coordinate with Kevan for platform provisioning.</p>
+
+    <hr class="divider"/>
+    <h3 style="color:#c9a84c;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 12px;">6. Non-Negotiable Rules</h3>
+    <table class="table">
+      <tr><th>#</th><th>Rule</th></tr>
+      <tr><td>1</td><td><strong>No NDA, no access.</strong> No confidential details shared before NDA is signed.</td></tr>
+      <tr><td>2</td><td><strong>No platform access before signed agreement.</strong> MSA or SOW must be executed first.</td></tr>
+      <tr><td>3</td><td><strong>$50K+ requires Kevan.</strong> All deals over $50,000 need Kevan's approval and co-signature.</td></tr>
+      <tr><td>4</td><td><strong>Every contact gets an intake record.</strong> No exceptions — even casual referrals get logged.</td></tr>
+      <tr><td>5</td><td><strong>All comms go through the system.</strong> No off-books deals via personal email or text.</td></tr>
+      <tr><td>6</td><td><strong>KYC/AML required for financial products.</strong> Any FTH Pay wallet user must complete identity verification.</td></tr>
+      <tr><td>7</td><td><strong>Flag anything suspicious.</strong> Pressure to skip docs, unusual requests, red flags → pause and escalate to Kevan immediately.</td></tr>
+    </table>
+
+    <hr class="divider"/>
+    <h3 style="color:#c9a84c;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 12px;">7. Systems Overview</h3>
+    <table class="table">
+      <tr><th>System</th><th>What it is</th><th>Your Role</th></tr>
+      <tr><td class="gold">FTH Pay</td><td>Digital payment gateway. Multi-currency merchant processing. UNY/ATP settlement.</td><td>Sign merchants. Qualify sales leads.</td></tr>
+      <tr><td class="gold">UnyKorn OS</td><td>Platform API — vault, RWA, namespace, trading on UnyKorn L1 (Chain 7331).</td><td>Onboard API clients. Collect docs.</td></tr>
+      <tr><td class="gold">VEN-M / CB Oriente</td><td>Lender pipeline + correspondence system. $42M alexandrite credit facility.</td><td>Referrals only — Kevan manages.</td></tr>
+      <tr><td class="gold">Apostle Chain</td><td>AI-to-AI settlement network. Chain ID 7332. ATP token. Autonomous agent registration.</td><td>Forward inquiries to Kevan.</td></tr>
+    </table>
+    <p>Comms portal: <a href="https://comms.unykorn.org" style="color:#c9a84c;">comms.unykorn.org</a> — API secret provided separately.</p>
+
+    <hr class="divider"/>
+    <h3 style="color:#c9a84c;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 12px;">8. What I Need From You</h3>
+    <table class="table">
+      <tr><th>#</th><th>Item</th></tr>
+      <tr><td>1</td><td>Any existing sales contacts or leads you already have — send me name, email, company, product interest</td></tr>
+      <tr><td>2</td><td>Your crypto wallet address (for UnyKorn OS / FTH Pay onboarding and any ATP allocation)</td></tr>
+      <tr><td>3</td><td>Your preferred working hours / availability for client calls</td></tr>
+      <tr><td>4</td><td>Any existing client relationships that should be imported into the system</td></tr>
+    </table>
+
+    <hr class="divider"/>
+    <p><strong>Primary escalation:</strong> Anything involving lenders, AI agents, deals over $50K, legal questions, technical setup, or red flags — escalate to Kevan immediately.</p>
+    <p>Kevan Burns &nbsp;·&nbsp; <a href="mailto:kevan@unykorn.org" style="color:#c9a84c;">kevan@unykorn.org</a> &nbsp;·&nbsp; +1 (321) 278-8323</p>
+    <p>Full SOP and contract templates: <a href="https://github.com/FTHTrading/VEN-M/tree/main/legal" style="color:#c9a84c;">github.com/FTHTrading/VEN-M/legal</a></p>`;
+
+  return {
+    subject: `Buck — UnyKorn / FTH Pay Ops Brief | Your Role, Systems & Intake Process`,
+    html: layout(body),
+  };
+}
+
+module.exports = { outreach, ndaTransmittal, diligencePacket, followUp, termSheetAck, general, intakeConfirmation, buckOpsBrief, layout };

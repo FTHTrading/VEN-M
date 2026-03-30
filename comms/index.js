@@ -13,6 +13,7 @@ const daemon   = require('./lib/daemon');
 const emailRoutes    = require('./routes/email');
 const contactRoutes  = require('./routes/contacts');
 const contractRoutes = require('./routes/contracts');
+const intakeRoutes   = require('./routes/intake');
 
 const app  = express();
 const PORT = process.env.PORT || 4080;
@@ -36,6 +37,7 @@ app.use((req, res, next) => {
 app.use('/api/email',     emailRoutes);
 app.use('/api/contacts',  contactRoutes);
 app.use('/api/contracts', contractRoutes);
+app.use('/api/intake',    intakeRoutes);
 
 // ── Root landing page ─────────────────────────────────────────────────────────
 app.get('/', (req, res) => {
@@ -299,14 +301,14 @@ app.get('/', (req, res) => {
     <div class="section-title">Web3 Identity</div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
       <div class="fin-card">
-        <div class="fin-label">Handshake TLD</div>
+        <div class="fin-label">UnyKorn L1 Namespace</div>
         <div class="fin-val" style="font-size:18px;letter-spacing:0.05em;">.unykorn</div>
-        <div class="fin-sub" style="color:#e0962a;">Registration in progress</div>
+        <div class="fin-sub" style="color:#2ecc71;">Native to Chain 7331 &mdash; Live</div>
       </div>
       <div class="fin-card">
-        <div class="fin-label">ENS Domain</div>
-        <div class="fin-val" style="font-size:16px;">unykorn.eth</div>
-        <div class="fin-sub" style="color:#e0962a;">Pending registration</div>
+        <div class="fin-label">Namespace Resolver</div>
+        <div class="fin-val" style="font-size:12px;padding-top:4px;">l1.unykorn.org/ns/:name</div>
+        <div class="fin-sub">On-chain registry &mdash; UnyKorn OS</div>
       </div>
       <div class="fin-card">
         <div class="fin-label">EVM Treasury</div>

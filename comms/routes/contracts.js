@@ -9,10 +9,13 @@ const contacts  = require('../lib/contacts');
 
 // ── GET /api/contracts ────────────────────────────────────────────────────────
 router.get('/', (req, res) => {
-  const { status, type, contactId } = req.query;
+  const { status, type, contactId, owner, system, lane } = req.query;
   let list;
   if (status)    list = contracts.byStatus(status);
   else if (type) list = contracts.byType(type);
+  else if (owner) list = contracts.byOwner(owner);
+  else if (system) list = contracts.bySystem(system);
+  else if (lane) list = contracts.byLane(lane);
   else if (contactId) list = contracts.byContact(contactId);
   else list = contracts.list();
   res.json({ ok: true, count: list.length, contracts: list });
@@ -26,6 +29,11 @@ router.get('/summary', (req, res) => {
 // ── GET /api/contracts/types ─ enum reference ─────────────────────────────────
 router.get('/types', (req, res) => {
   res.json({ types: contracts.CONTRACT_TYPES, statuses: contracts.CONTRACT_STATUSES });
+});
+
+// ── GET /api/contracts/policy ── offered contract matrix and ownership model
+router.get('/policy', (req, res) => {
+  res.json({ ok: true, policy: contracts.policyMatrix() });
 });
 
 // ── GET /api/contracts/:id ────────────────────────────────────────────────────

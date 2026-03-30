@@ -1,1 +1,28 @@
-[]
+[
+  {
+    "id": "134b7961-1988-4a02-a22a-b5eb5ac0456f",
+    "direction": "outbound",
+    "contactId": null,
+    "contactName": "Buck Vaughan",
+    "to": "buckvaughan3636@gmail.com",
+    "from": "kevan@unykorn.org",
+    "subject": "Buck — UnyKorn / FTH Pay Ops Brief | Your Role, Systems & Intake Process",
+    "type": "ops_brief",
+    "contractId": null,
+    "notes": "",
+    "at": "2026-03-30T18:17:55.078Z"
+  },
+  {
+    "id": "540137bd-edfe-465c-9d48-cc37941e49db",
+    "direction": "outbound",
+    "contactId": null,
+    "contactName": "Buck Vaughan",
+    "to": "buckvaughan3636@gmail.com",
+    "from": "kevan@unykorn.org",
+    "subject": "Buck — UnyKorn / FTH Pay Ops Brief | Your Role, Systems & Intake Process",
+    "type": "ops_brief",
+    "contractId": null,
+    "notes": "",
+    "at": "2026-03-30T18:21:46.934Z"
+  }
+]

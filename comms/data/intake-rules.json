@@ -1,0 +1,148 @@
+{
+  "_comment": "Intake rules — defines pipeline stages, required docs, and system routing per client type",
+
+  "operating_lanes": {
+    "core_system": {
+      "description": "Business operations lane for lenders, service clients, and sales",
+      "owners": ["buck", "kevan"],
+      "systems": ["lender_pipeline", "unykorn_os", "fth_pay"]
+    },
+    "ai_system": {
+      "description": "AI operations lane for Apostle Chain autonomous agents",
+      "owners": ["kevan"],
+      "systems": ["apostle_chain"]
+    }
+  },
+
+  "lender": {
+    "label": "Lender / Investor",
+    "description": "Institutional lenders, family offices, private credit funds — CB Oriente portfolio",
+    "assignDefault": "kevan",
+    "system": "lender_pipeline",
+    "pipeline": [
+      "prospect", "outreach_sent", "nda_sent", "nda_signed",
+      "packet_sent", "term_sheet_received", "term_sheet_signed",
+      "credit_agreement_sent", "funded", "declined", "stalled"
+    ],
+    "requiredDocs": [
+      "nda",
+      "investor_profile",
+      "source_of_funds",
+      "aml_kyc"
+    ],
+    "contracts": ["nda", "loi", "term_sheet", "credit_agreement"],
+    "intakeFields": ["name", "email", "organization", "phone", "category", "notes"],
+    "rules": [
+      "NDA must be executed before any diligence materials are shared",
+      "All lender contacts are owned by Kevan — Buck is supporting only",
+      "Do not share appraisal, SHA-256, or full asset docs without signed NDA",
+      "Log every email and call in the comms system",
+      "Follow-up cadence: 7 days after outreach, 14 days after NDA, 21 days after packet",
+      "Any term sheet received must be forwarded to Kevan within 24 hours"
+    ]
+  },
+
+  "client": {
+    "label": "Business / Service Client",
+    "description": "Companies and individuals using UnyKorn platform services (FTH Pay, API, UnyKorn OS)",
+    "assignDefault": "buck",
+    "system": "unykorn_os",
+    "pipeline": [
+      "lead", "discovery", "proposal_sent", "agreement_sent",
+      "onboarded", "active", "paused", "churned"
+    ],
+    "requiredDocs": [
+      "nda",
+      "kyc_aml",
+      "service_agreement",
+      "use_case_description",
+      "company_registration"
+    ],
+    "contracts": ["nda", "service_agreement", "msa", "sow"],
+    "intakeFields": [
+      "name", "email", "organization", "phone", "product",
+      "use_case", "monthly_volume_estimate", "notes"
+    ],
+    "rules": [
+      "Collect KYC/AML before any API credentials are issued",
+      "NDA required before sharing platform architecture or pricing tiers",
+      "All service agreements must be co-signed by Kevan (CEO) before execution",
+      "Buck handles discovery calls and proposal delivery",
+      "Onboarding confirmation email auto-sends on intake creation",
+      "Platform access is provisioned ONLY after signed service agreement received",
+      "Buck must update intake stage within 48 hours of each milestone"
+    ]
+  },
+
+  "ai_agent": {
+    "label": "AI Agent (Apostle Chain)",
+    "description": "AI agents being registered and funded on the Apostle Chain settlement layer (Chain 7332)",
+    "assignDefault": "kevan",
+    "system": "apostle_chain",
+    "pipeline": [
+      "pending_registration", "registered", "provisioned",
+      "funded", "active", "suspended", "terminated"
+    ],
+    "requiredDocs": [
+      "agent_registration_form",
+      "operator_identity",
+      "intended_use_declaration",
+      "ai_agent_agreement"
+    ],
+    "contracts": ["ai_agent_agreement", "data_processing_agreement"],
+    "intakeFields": [
+      "name", "email", "organization", "agent_label",
+      "agent_purpose", "operator_wallet", "funding_amount_atp"
+    ],
+    "rules": [
+      "Every AI agent must have a human operator on record (name + email + phone)",
+      "Operator must sign the AI Agent Service Agreement before agent is provisioned",
+      "Agent registration auto-calls Apostle Chain /v1/agents/register",
+      "Airdrop funding only after agreement is signed and recorded",
+      "Agent activity is monitored — suspicious behavior triggers suspension",
+      "AI agents operate only within declared use-case — no mission expansion without amendment",
+      "All AI agent agreements are owned by Kevan — Buck escalates any AI client to Kevan"
+    ]
+  },
+
+  "sales": {
+    "label": "Sales Lead",
+    "description": "Inbound or outbound sales prospects for any UnyKorn product or service",
+    "assignDefault": "buck",
+    "system": "fth_pay",
+    "pipeline": [
+      "lead", "qualified", "discovery", "proposal",
+      "negotiation", "closed_won", "closed_lost"
+    ],
+    "requiredDocs": [
+      "discovery_call_notes",
+      "proposal"
+    ],
+    "contracts": ["nda", "sales_agreement"],
+    "intakeFields": [
+      "name", "email", "organization", "phone",
+      "product_interest", "budget_estimate", "notes"
+    ],
+    "rules": [
+      "All leads captured within 24 hours of first contact",
+      "Discovery call scheduled within 5 business days of lead intake",
+      "Proposal sent within 3 business days of discovery call",
+      "Buck owns all sales leads — updates Kevan on deals over $10,000 MRR",
+      "Do not promise pricing or timelines without Kevan approval",
+      "Closed-won deals immediately transition to 'client' type for onboarding",
+      "Follow-up EVERY 7 days until qualified, declined, or advanced"
+    ]
+  },
+
+  "global_rules": [
+    "AI lane and core lane must stay separate in intake, contracts, and approvals",
+    "Every client/contact in the system must have: name, email, type, and assigned owner",
+    "No client receives platform access, API keys, or funds before their required docs are received",
+    "Kevan signs off on all contracts over $50,000 in value",
+    "Buck handles initial intake and discovery for client + sales types",
+    "Kevan handles all lender and AI agent relationships directly",
+    "All correspondence (email, calls) must be logged in the comms system within 24 hours",
+    "Client data is confidential — do not share with third parties without written consent",
+    "Non-negotiable: AML/KYC docs for any financial product client before onboarding"
+  ]
+}
